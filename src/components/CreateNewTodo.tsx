@@ -12,11 +12,12 @@ const CreateNewTodo = ({
   onAddingButtonClick,
 }: Props) => {
   return (
-    <div>
+    <div style={{ display: "flex", gap: "10px" }}>
       <TextField
         size="small"
         value={newToDoString}
         onChange={onNewTodoChange}
+        style={{ width: "100%" }}
       />
       <Button variant="contained" onClick={onAddingButtonClick}>
         Thêm

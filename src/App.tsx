@@ -6,9 +6,9 @@ import TodoList from "./components/TodoList";
 export type TodoType = { id: string; name: string; isCompleted: boolean };
 function App() {
   const [todoList, setTodoList] = useState<TodoType[]>(() => {
-    const savedTodoList = JSON.parse(localStorage.getItem('todoList') ?? '[]');
-    
-    if(savedTodoList?.length) {
+    const savedTodoList = JSON.parse(localStorage.getItem("todoList") ?? "[]");
+
+    if (savedTodoList?.length) {
       return savedTodoList;
     }
     return [];
@@ -40,21 +40,56 @@ function App() {
     });
   };
 
-  useEffect(() => {
-    localStorage.setItem('todoList', JSON.stringify(todoList));
+  const deleteTodo = (todoId: string) => {
+    const isDelete = window.confirm("Bạn có chắc muốn xóa không?");
 
+    if (isDelete) {
+      setTodoList((prevState) => {
+        return prevState.filter((todo) => todo.id !== todoId);
+      });
+    }
+
+    return todoList;
+  };
+
+  useEffect(() => {
+    localStorage.setItem("todoList", JSON.stringify(todoList));
   }, [todoList]);
 
   return (
     <>
-      <p>this is to do App</p>
-      <CreateNewTodo
-        onAddingButtonClick={onAddingButtonClick}
-        newToDoString={newToDoString}
-        onNewTodoChange={onNewTodoChange}
-      />
-      <TodoList updateIsCompleted={updateIsCompleted} todoList={todoList} />
-      
+      <div
+        className="Container"
+        style={{
+          width: "50%",
+          margin: "0 auto",
+          backgroundColor: "#f0f0f0",
+          padding: "20px",
+          borderRadius: "10px",
+        }}
+      >
+        <p
+          style={{
+            fontSize: "30px",
+            fontWeight: "700",
+            color: "blue",
+            margin: "20px 0",
+            textAlign: "center",
+          }}
+        >
+          Text Note
+        </p>
+        <CreateNewTodo
+          onAddingButtonClick={onAddingButtonClick}
+          newToDoString={newToDoString}
+          onNewTodoChange={onNewTodoChange}
+        />
+        <TodoList
+          updateIsCompleted={updateIsCompleted}
+          todoList={todoList}
+          deleteTodo={deleteTodo}
+        />
+      </div>
     </>
   );
 }
